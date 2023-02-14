@@ -55,10 +55,10 @@ params = {
     "symbol": "BTCUSDT",
     "side": "Buy",
     "orderType": "Limit",
-    "qty": "1",
-    "price": "21833",
+    "qty": "0.01",
+    "price": "21770",
     "timeInForce": "PostOnly",
-    "orderLinkId": "linear-test",
+    "orderLinkId": "linear-test_1",
     "isLeverage": 0,
     "orderFilter": "Order"
 }
