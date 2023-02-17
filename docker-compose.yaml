@@ -13,3 +13,7 @@ services:
         echo 'Starting bybit_api app...' &&
         python3 main.py
       "
+
+networks:
+  my_net:
+    name: my_net
