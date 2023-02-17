@@ -1,78 +1,38 @@
-from pybit import usdc_perpetual
+# imports block
+import os
 
-import requests
-import time
-import hashlib
-import hmac
-import uuid
-import datetime
+import yaml
 from pprint import pprint
 
-import matplotlib.pyplot as plt
-
-api_key = 'lQfazGAVDo5uTHxAXz'
-secret_key = '9Vp2FRFja1xl3LXxhC77NqO6qyD3pNONv78H'
-httpClient = requests.Session()
-recv_window = str(5000)
-url = "https://api-testnet.bybit.com"  # Testnet endpoint
-
-def HTTP_Request(endPoint,method,payload,Info):
-    global time_stamp
-    time_stamp = str(int(time.time() * 10 ** 3))
-    signature = genSignature(payload)
-    headers = {
-        'X-BAPI-API-KEY': api_key,
-        'X-BAPI-SIGN': signature,
-        'X-BAPI-SIGN-TYPE': '2',
-        'X-BAPI-TIMESTAMP': time_stamp,
-        'X-BAPI-RECV-WINDOW': recv_window,
-        'Content-Type': 'application/json'
-    }
-    if method == "POST":
-        response = httpClient.request(method, url+endPoint, headers=headers, data=payload)
-    else:
-        response = httpClient.request(method, url+endPoint+"?"+payload, headers=headers)
-    # print(response.url)
-    # pprint(response.text)
-    print(Info + " Elapsed Time : " + str(response.elapsed))
-    return response.json()
+from connection.methods import BybitConnector
 
 
-def genSignature(payload):
-    param_str = str(time_stamp) + api_key + recv_window + payload
-    hash = hmac.new(bytes(secret_key, "utf-8"), param_str.encode("utf-8"), hashlib.sha256)
-    signature = hash.hexdigest()
-    return signature
+# logic block
+dir_path = os.path.dirname(os.path.realpath(__file__))
+with open(f'{dir_path}/config.yaml', 'r') as file:
+    config = yaml.load(file, Loader=yaml.FullLoader)
 
-# Create Internal Transfer ( SPOT to UNIFIED )
-# endpoint = "/asset/v3/private/transfer/inter-transfer"
-# method = "POST"
-# transferId = uuid.uuid4()
-# params = '{"transferId": "' + str(transferId) +  '","coin": "USDT","amount": "1","from_account_type": "SPOT","to_account_type": "UNIFIED"}'
-# HTTP_Request(endpoint, method, params, "InternalTransfer")
+new_conn = BybitConnector(config['platform'],
+                          config['api_key'],
+                          config['api_secret'],
+                          str(5000))
 
-# Query Internal Transfer List
-# endpoint = "/asset/v3/private/transfer/inter-transfer/list/query"
-# method = "GET"
-# params = 'coin=USDT'
-# HTTP_Request(endpoint, method, params, "InternalTransferList")
+endpoint = "/v5/order/create"
+h_method = "POST"
+params = {
+    "category": "linear",
+    "symbol": "BTCUSDT",
+    "side": "Buy",
+    "orderType": "Limit",
+    "qty": "0.01",
+    "price": "21770",
+    "timeInForce": "PostOnly",
+    "orderLinkId": "linear-test_2",
+    "isLeverage": 0,
+    "orderFilter": "Order"
+}
 
-    # Historical information
-    endpoint = "/v5/order/create"
-    method = "POST"
-    #params = 'category=linear&symbol=BTCUSDT'
-    params = {
-        "category": "spot",
-        "symbol": "BTCUSDT",
-        "side": "Buy",
-        "orderType": "Limit",
-        "qty": "0.1",
-        "price": "15600",
-        "timeInForce": "PostOnly",
-        "orderLinkId": "spot-test-postonly",
-        "isLeverage": 0,
-        "orderFilter": "Order"
-    }
-    historical_data = HTTP_Request(endpoint, method, params, "Historical list")
+result = '{'+','.join([f'"{key}": "{value}"' for key, value in params.items()])+'}'
 
-
+place_order = new_conn.http_request(endpoint, h_method, result, "Place order 'linear'")
+pprint(place_order)
