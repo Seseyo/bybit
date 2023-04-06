@@ -3,20 +3,20 @@ place_order:
   symbol: "BTCUSDT"
   side: "Buy"
   orderType: "Limit"
-  qty: "0.01"
-  price: "21770"
+  qty: "0.002"
+  price: "28240"
   timeInForce: "PostOnly"
-  orderLinkId: "linear-test_3"
-  isLeverage: 0
+  orderLinkId: ""
+  isLeverage: 20
   orderFilter: "Order"
 
 get_kline_btc:
   category: "linear"
   symbol: "BTCUSDT"
-  interval: "1"
+  interval: "15"
   start: "1676544788406"
   end: "1676546708726"
-  limit: 60
+  limit: 50
 
 get_kline_eth:
   category: "linear"
@@ -39,3 +39,9 @@ get_history_ethusdt:
 get_tickers:
   category: 'linear'
   symbol: 'ETHUSDT'
+
+switch_mode:
+  category: 'linear'
+  symbol: 'BTCUSDT'
+  coin: null
+  mode: 0

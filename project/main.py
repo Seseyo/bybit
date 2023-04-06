@@ -125,13 +125,18 @@ def get_scale():
 
     return eth_price/btc_price
 
+def place_order():
+    result = new_conn.http_request("/v5/order/create", "POST", params['place_order'])
+    print(result)
+
+
+def switch_mode():
+    result = new_conn.http_request("/v5/position/switch-mode", "POST", params['switch_mode'])
+    print(result)
 
 def main():
-    scale = get_scale()
-    while True:
-        print("------ GET DATA -----")
-        get_all_data(scale)
-        time.sleep(0.1)
+   # switch_mode()
+    place_order()
 
 
 if __name__ == '__main__':

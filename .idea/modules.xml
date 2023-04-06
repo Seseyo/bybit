@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://D:/Documents/PycharmProjects/BybitBot/.idea/BybitBot1.iml" filepath="D:/Documents/PycharmProjects/BybitBot/.idea/BybitBot1.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/bybit_api.iml" filepath="$PROJECT_DIR$/.idea/bybit_api.iml" />
     </modules>
   </component>
