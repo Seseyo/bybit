@@ -25,7 +25,7 @@ params = {
     "side": "Buy",
     "orderType": "Limit",
     "qty": "0.01",
-    "price": "21770",
+    "price": "26641",
     "timeInForce": "PostOnly",
     "orderLinkId": "linear-test_2",
     "isLeverage": 0,
